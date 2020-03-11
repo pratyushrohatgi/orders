@@ -1,17 +1,17 @@
 """
-Test cases for <your resource name> Model
+Test cases for Orders Model
 
 """
 import logging
 import unittest
 import os
-from service.models import YourResourceModel, DataValidationError, db
+from service.models import Orders, DataValidationError, db
 
 ######################################################################
-#  <your resource name>   M O D E L   T E S T   C A S E S
+#  Orders   M O D E L   T E S T   C A S E S
 ######################################################################
-class TestYourResourceModel(unittest.TestCase):
-    """ Test Cases for <your resource name> Model """
+class TestOrders(unittest.TestCase):
+    """ Test Cases for Orders Model """
 
     @classmethod
     def setUpClass(cls):
