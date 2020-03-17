@@ -27,6 +27,10 @@ class Orders(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer)
     customer_id = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    status = db.Column(db.Enum('Delivered', 'In Progress', 'Cancelled'))
+
 
     def __repr__(self):
         return "<Orders %r id=[%s]>" % (self.name, self.id)
