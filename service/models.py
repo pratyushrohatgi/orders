@@ -27,6 +27,10 @@ class Orders(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer)
     customer_id = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+    quantity = db.Column(db.Integer)
+    status = db.Column(db.Enum('Delivered', 'In Progress', 'Cancelled'))
+
 
     def __repr__(self):
         return "<Orders %r id=[%s]>" % (self.name, self.id)
@@ -58,7 +62,10 @@ class Orders(db.Model):
         return {
             "order_id": self.order_id,
             "product_id": self.product_id,
-            "customer_id": self.order_id,
+            "customer_id": self.customer_id,
+            "price": self.price,
+            "quantity": self.quantity,
+            "status": self.status
             
         }
 
@@ -73,6 +80,9 @@ class Orders(db.Model):
             self.order_id = data["order_id"]
             self.product_id = data["product_id"]
             self.customer_id = data["customer_id"]
+            self.price = data["price"]
+            self.quantity = data["quantity"]
+            self.status = data["status"]
         except KeyError as error:
             raise DataValidationError("Invalid Orders: missing " + error.args[0])
         except TypeError as error:
