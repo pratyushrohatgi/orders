@@ -35,6 +35,18 @@ class TestOrders(unittest.TestCase):
 #  P L A C E   T E S T   C A S E S   H E R E 
 ######################################################################
 
+    def test_create_an_order(self):
+        """ Create a Order and assert that it exists """
+    	fake_order = OrderFactory()
+    	order = Order(
+        	name=fake_order.name,
+        	status=fake_order.status
+    	)
+        self.assertTrue(order != None)
+        self.assertEqual(order.id, None)
+        self.assertEqual(order.name, fake_order.name)
+        self.assertEqual(order.status, fake_order.status)
+
     def test_XXXX(self):
         """ Test something """
         self.assertTrue(True)
