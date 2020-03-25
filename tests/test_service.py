@@ -46,3 +46,27 @@ class TestYourResourceServer(TestCase):
         """ Test index call """
         resp = self.app.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        
+        def test_update_order(self):
+        """ Update an existing Order """
+    	# create an Order to update
+    	test_order = OrderFactory()
+    	resp = self.app.post(
+        	"/orders",
+        	json=test_order.serialize(),
+            content_type="application/json"
+    	)
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+ 
+    	# update the pet
+    	new_order = resp.get_json()
+    	new_order["name"] = "Happy-Happy Joy-Joy"
+    	resp = self.app.put(
+        	"/orders/{}".format(new_order["id"]),
+        	json=new_order,
+            content_type="application/json",
+    	)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    	updated_order = resp.get_json()
+        self.assertEqual(updated_order["name"], "Happy-Happy Joy-Joy")
+
