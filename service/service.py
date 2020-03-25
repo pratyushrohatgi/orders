@@ -36,7 +36,27 @@ def init_db():
     global app
     Orders.init_db(app)
 
-    
+
+  
+######################################################################
+# UPDATE AN EXISTING ORDER
+######################################################################
+@app.route("/orders/<int:order_id>", methods=["PUT"])
+def update_orders(order_id):
+	"""
+	Update an Order
+	This endpoint will update an Order based the body that is posted
+	"""
+    app.logger.info("Request to update order with id: %s", order_id)
+    check_content_type("application/json")
+	order = Order.find(order_id)
+	if not order:
+    	raise NotFound("Order with id '{}' was not found.".format(order_id))
+	order.deserialize(request.get_json())
+	order.id = order_id
+	order.save()
+	return make_response(jsonify(order.serialize()), status.HTTP_200_OK)
+
 ######################################################################
 # CREATE A NEW ORDER
 ######################################################################
