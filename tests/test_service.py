@@ -46,3 +46,19 @@ class TestYourResourceServer(TestCase):
         """ Test index call """
         resp = self.app.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        
+    def _create_orders(self, count):
+        """ Factory method to create orders in bulk """
+    	orders = []
+    	for _ in range(count):
+        	order = OrderFactory()
+        	resp = self.app.post(
+                "/orders", json=order.serialize(), content_type="application/json"
+        	)
+            self.assertEqual(
+                resp.status_code, status.HTTP_201_CREATED, "Could not create test Order"
+        	)
+        	new_order = resp.get_json()
+        	order.id = new_order["id"]
+        	orders.append(order)
+    	return orders
