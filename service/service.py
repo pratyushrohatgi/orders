@@ -35,3 +35,24 @@ def init_db():
     """ Initialies the SQLAlchemy app """
     global app
     Orders.init_db(app)
+
+    
+######################################################################
+# CREATE A NEW ORDER
+######################################################################
+@app.route("/orders", methods=["POST"])
+def create_orders():
+	"""
+	Creates an Order
+    This endpoint will create an Order based the data in the body that is posted
+	"""
+    app.logger.info("Request to create an Order")
+    check_content_type("application/json")
+	order = Order()
+	order.deserialize(request.get_json())
+	order.create()
+	message = order.serialize()
+	location_url = url_for("get_orders", order_id=order.id, _external=True)
+	return make_response(
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+	)
