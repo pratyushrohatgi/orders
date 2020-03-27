@@ -83,24 +83,24 @@ class Product(db.Model, PersistentBase):
 	# Table Schema
 	id = db.Column(db.Integer, primary_key=True)
 	order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-	quantity = db.Column(db.Integer)
-	price = db.Column(db.Integer)
-	product_name = db.Column(db.Integer)
+	quantity = db.Column(db.String(64))
+	price = db.Column(db.String(64))
+	product_name = db.Column(db.String(64))
  
 	def __repr__(self):
 		return "<Product %r id=[%s] order[%s]>" % (self.product_name, self.id, self.order_id)
  
 	def __str__(self):
-		return "%s: %s, %s, %s, %s" % (self.product_name, self.id, self.order_id,self.quantity,self.price)
+		return "%s: %s, %s" % (self.product_name, self.quantity,self.price)
  
 	def serialize(self):
-		""" Serializes a Address into a dictionary """
+		""" Serializes a Product into a dictionary """
 		return {
             "id": self.id,
         	"order_id": self.order_id,
-        	"product_name ": self.product_name,
-        	"quantity ": self.quantity,
-        	"price ": self.price
+        	"product_name": self.product_name,
+        	"quantity": self.quantity,
+        	"price": self.price
     	}
  
 	def deserialize(self, data):
@@ -135,8 +135,8 @@ class Order(db.Model, PersistentBase):
  
 	# Table Schema
 	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.Integer)
-	status = db.Column(db.Enum('Delivered', 'In Progress', 'Cancelled'))
+	name = db.Column(db.String(64))
+	status = db.Column(db.String(64))
 	products = db.relationship('Product', backref='order', lazy=True) 
  
 	def __repr__(self):
@@ -146,12 +146,12 @@ class Order(db.Model, PersistentBase):
 		""" Serializes a Account into a dictionary """
 		order = {
 			"id": self.id,
-			"name": self.names,
+			"name": self.name,
 			"status": self.status,
 			"products": []
 		}
-		for address in self.addresses:
-			order[items].append(address.serialize())
+		for product in self.products:
+			order[product].append(product.serialize())
 		return order
  
 	def deserialize(self, data):
@@ -163,12 +163,12 @@ class Order(db.Model, PersistentBase):
 		try:
 			self.name = data["name"]
 			self.status = data["status"]
-			# handle inner list of addresses
+			# handle inner list of products
 			product_list = data.get("products")
 			for json_product in product_list:
 				product = Product ()
-				item.deserialize(json_product)
-				self.item.append(product)
+				product.deserialize(json_product)
+				self.product.append(product)
 		except KeyError as error:
 			raise DataValidationError("Invalid Order: missing " + error.args[0])
 		except TypeError as error:

@@ -57,6 +57,20 @@ class TestOrder(unittest.TestCase):
 		self.assertTrue(order != None)
 		self.assertEqual(order.id, None)
 		return order
+	
+	def _create_product(self):
+		""" Creates fake products from factory """
+		fake_product = ProductFactory()
+		product = Product(
+			quantity = fake_product.quantity,
+			product_name = fake_product.product_name,
+			
+			price = fake_product.price,
+		)
+		self.assertTrue(product != None)
+		self.assertEqual(product.id, None)
+		return product
+
 
 ######################################################################
 #  T E S T   C A S E S
