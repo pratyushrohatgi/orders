@@ -83,22 +83,22 @@ class Product(db.Model, PersistentBase):
 	# Table Schema
 	id = db.Column(db.Integer, primary_key=True)
 	order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
-	quantity = db.Column(db.String(64))
-	price = db.Column(db.String(64))
-	product_name = db.Column(db.String(64))
+	quantity = db.Column(db.Integer)
+	price = db.Column(db.Integer)
+	name = db.Column(db.String(64))
  
 	def __repr__(self):
-		return "<Product %r id=[%s] order[%s]>" % (self.product_name, self.id, self.order_id)
+		return "<Product %r id=[%s] order[%s]>" % (self.name, self.id, self.order_id)
  
 	def __str__(self):
-		return "%s: %s, %s" % (self.product_name, self.quantity,self.price)
+		return "%s: %s, %s" % (self.name, self.quantity,self.price)
  
 	def serialize(self):
 		""" Serializes a Product into a dictionary """
 		return {
             "id": self.id,
         	"order_id": self.order_id,
-        	"product_name": self.product_name,
+        	"name": self.name,
         	"quantity": self.quantity,
         	"price": self.price
     	}
@@ -111,7 +111,7 @@ class Product(db.Model, PersistentBase):
     	"""
 		try:
 			self.order_id = data["order_id"]
-			self.product_name = data["product_name"]
+			self.name = data["name"]
 			self.quantity = data["quantity"]
 			self.price = data["price"]
 		except KeyError as error:
@@ -151,7 +151,7 @@ class Order(db.Model, PersistentBase):
 			"products": []
 		}
 		for product in self.products:
-			order[product].append(product.serialize())
+			order['products'].append(product.serialize())
 		return order
  
 	def deserialize(self, data):
@@ -168,7 +168,7 @@ class Order(db.Model, PersistentBase):
 			for json_product in product_list:
 				product = Product ()
 				product.deserialize(json_product)
-				self.product.append(product)
+				self.products.append(product)
 		except KeyError as error:
 			raise DataValidationError("Invalid Order: missing " + error.args[0])
 		except TypeError as error:

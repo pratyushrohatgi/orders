@@ -63,7 +63,7 @@ class TestOrder(unittest.TestCase):
 		fake_product = ProductFactory()
 		product = Product(
 			quantity = fake_product.quantity,
-			product_name = fake_product.product_name,
+			name = fake_product.name,
 			
 			price = fake_product.price,
 		)
@@ -162,7 +162,7 @@ class TestOrder(unittest.TestCase):
 		products = serial_order['products']
 		self.assertEqual(products[0]['id'], product.id)
 		self.assertEqual(products[0]['order_id'], product.order_id)
-		self.assertEqual(products[0]['product_name'], product.product_name)
+		self.assertEqual(products[0]['name'], product.name)
 		self.assertEqual(products[0]['quantity'], product.quantity)
 		self.assertEqual(products[0]['price'], product.price)
  
@@ -211,7 +211,7 @@ class TestOrder(unittest.TestCase):
 		self.assertEqual(len(orders), 1)
  
 		new_order = Order.find(order.id)
-		self.assertEqual(order.products[0].product_name, product.product_name)
+		self.assertEqual(order.products[0].name, product.name)
  
 		product2 = self._create_product()
 		order.products.append(product2)
@@ -219,7 +219,7 @@ class TestOrder(unittest.TestCase):
  
 		new_order = Order.find(order.id)
 		self.assertEqual(len(order.products), 2)
-		self.assertEqual(order.products[1].name, product2.product_name)
+		self.assertEqual(order.products[1].name, product2.name)
  
 	def test_update_order_product(self):
 		"""" Update an orders product """
@@ -239,13 +239,13 @@ class TestOrder(unittest.TestCase):
 		old_product = order.products[0]
 		self.assertEqual(old_product.price, product.price)
 
-		old_product.price = "XX"
+		old_product.price = 1
 		order.save()
 
 		# Fetch it back again
 		order = Order.find(order.id)
 		product = order.products[0]
-		self.assertEqual(product.price, "XX")
+		self.assertEqual(product.price, 1)
 
 	def test_delete_order_product(self):
 		""" Delete an orders product """

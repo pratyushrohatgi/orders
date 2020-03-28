@@ -29,9 +29,9 @@ class ProductFactory(factory.Factory):
  
 	id = factory.Sequence(lambda n: n)
 #	order_id = ???
-	product_name = factory.Faker("brush")
-	price = factory.Faker("5")
-	quantity = factory.Faker("3")
+	name = factory.Faker("name")
+	price = factory.fuzzy.FuzzyInteger(0,100)
+	quantity = factory.fuzzy.FuzzyInteger(0,10)
  
  
 class OrderFactory(factory.Factory):
