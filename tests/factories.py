@@ -15,6 +15,7 @@
 """
 Test Factory to make fake objects for testing
 """
+
 import factory
 from datetime import datetime
 from factory.fuzzy import FuzzyChoice
@@ -22,23 +23,23 @@ from service.models import Order, Product
  
 class ProductFactory(factory.Factory):
 	""" Creates fake Products """
- 
+
 	class Meta:
-    	model = Product
+		model = Product
  
 	id = factory.Sequence(lambda n: n)
 #	order_id = ???
-	product_name = FuzzyChoice(“thing”)
-	price = factory.Faker("5")
-	quantity = factory.Faker("3")
+	name = factory.Faker("name")
+	price = factory.fuzzy.FuzzyInteger(0,100)
+	quantity = factory.fuzzy.FuzzyInteger(0,10)
  
  
 class OrderFactory(factory.Factory):
 	""" Creates fake Orders """
- 
+
 	class Meta:
-    	model = Order
- 
+		model = Order
+
 	id = factory.Sequence(lambda n: n)
 	name = factory.Faker("name")
-	status = factory.Faker(choices=[" 'Delivered", "In Progress", "Cancelled"]))
+	status = FuzzyChoice(choices=["Delivered", "In Progress", "Cancelled"])
