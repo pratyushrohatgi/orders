@@ -1,42 +1,29 @@
-# project-template
+# Orders 
 
-This is a skeleton you can use to start your projects
+This repository contains sample code for Customer orders for an e-commerce web site. This shows how to create a REST API with subordinate resources like orders that have products:
 
-## Overview
+Note: This repo has a Vagrantfile so the easiest way to play with it is to:
 
-This project template contains starter code for your class project. The `/service` folder contains your `models.py` file for your model and a `service.py` file for your service. The `/tests` folder has test case starter code for testing the model and the service separately. All you need to do is add your functionality. You can use the [lab-flask-rest](https://github.com/nyu-devops/lab-flask-rest)
-for code examples.
+vagrant up
+vagrant ssh
+cd /vagrant
+nosetests
+flask run -h 0.0.0.0
+These are the RESTful routes for orders and products
 
-## Setup
+Endpoint          Methods  Rule
+----------------  -------  -----------------------------------------------------
+index             GET      /
 
-You should clone this repository and and the copy and paste the starter code into your project repo folder on your local computer.
+list_orders     GET      /orders
+create_orders   POST     /orders
+get_orders      GET      /orders/<order_id>
+update_orders   PUT      /orders/<order_id>
+delete_orders   DELETE   /orders/<order_id>
 
-Assuming your repo is empty, you can use the following commands:
-
-```shell
-    git clone https://github.com/nyu-devops/project-template.git
-    cp -R project-template/ <your_repo_folder>/
-```
-
-This will recursively copy the contents of the template to your repo folder.
-
-## Contents
-
-The project contains the following:
-
-```text
-dot-env-example     - copy to .env to use environment variables
-config.py           - configuration parameters
-
-service/            - service python package
-├── __init__.py     - package initializer
-├── models.py       - module with business models
-└── service.py      - module with service routes
-
-tests/              - test cases package
-├── __init__.py     - package initializer
-├── test_models.py  - test suite for busines models
-└── test_service.py - test suite for service routes
-```
-
-This repository is part of the NYU class **CSCI-GA.2810-001: DevOps and Agile Methodologies** taught by John Rofrano, Adjunct Instructor, NYU Curant Institute, Graduate Division, Computer Science.
+list_products    GET      /orders/<int:order_id>/products
+create_products  POST     /orders/<order_id>/products
+get_products     GET      /orders/<order_id>/products/<product_id>
+update_products  PUT      /orders/<order_id>/products/<product_id>
+delete_products  DELETE   /orders/<order_id>/products/<product_id>
+The test cases have 95% test coverage and can be run with nosetests
