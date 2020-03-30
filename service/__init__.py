@@ -10,7 +10,7 @@ import logging
 from flask import Flask
 
 # Create Flask application
-app = Flask(__name__)
+app = Flask(__name__) # pylint: disable=locally-disabled, invalid-name
 app.config.from_object('config')
 
 # Import the rutes After the Flask app is created
@@ -18,12 +18,13 @@ from service import service, models
 
 # Set up logging for production
 if __name__ != '__main__':
-    gunicorn_logger = logging.getLogger('gunicorn.error')
-    app.logger.handlers = gunicorn_logger.handlers
-    app.logger.setLevel(gunicorn_logger.level)
+    GUNICORN_LOGGER = logging.getLogger('gunicorn.error')
+    app.logger.handlers = GUNICORN_LOGGER.handlers
+    app.logger.setLevel(GUNICORN_LOGGER.level)
     app.logger.propagate = False
     # Make all log formats consistent
-    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s", "%Y-%m-%d %H:%M:%S %z")
+    formatter = logging.Formatter("[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s",
+                                  "%Y-%m-%d %H:%M:%S %z") # pylint: disable=locally-disabled, invalid-name
     for handler in app.logger.handlers:
         handler.setFormatter(formatter)
     app.logger.info('Logging handler established')

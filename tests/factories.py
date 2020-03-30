@@ -11,35 +11,36 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
- 
+
 """
 Test Factory to make fake objects for testing
 """
-
+#from datetime import datetime
 import factory
-from datetime import datetime
 from factory.fuzzy import FuzzyChoice
 from service.models import Order, Product
- 
+
 class ProductFactory(factory.Factory):
-	""" Creates fake Products """
+    """ Creates fake Products """
 
-	class Meta:
-		model = Product
- 
-	id = factory.Sequence(lambda n: n)
+    class Meta:
+        """ Creates fake Products """
+        model = Product
+
+    id = factory.Sequence(lambda n: n)
 #	order_id = ???
-	name = factory.Faker("name")
-	price = factory.fuzzy.FuzzyInteger(0,100)
-	quantity = factory.fuzzy.FuzzyInteger(0,10)
- 
- 
+    name = factory.Faker("name")
+    price = factory.fuzzy.FuzzyInteger(0, 100)
+    quantity = factory.fuzzy.FuzzyInteger(0, 10)
+
+
 class OrderFactory(factory.Factory):
-	""" Creates fake Orders """
+    """ Creates fake Orders """
 
-	class Meta:
-		model = Order
+    class Meta:
+        """ Creates fake Orders """
+        model = Order
 
-	id = factory.Sequence(lambda n: n)
-	name = factory.Faker("name")
-	status = FuzzyChoice(choices=["Delivered", "In Progress", "Cancelled"])
+    id = factory.Sequence(lambda n: n)
+    name = factory.Faker("name")
+    status = FuzzyChoice(choices=["Delivered", "In Progress", "Cancelled"])
