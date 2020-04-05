@@ -1,4 +1,5 @@
 # Orders 
+[![Build Status](https://travis-ci.org/NYU-Devops-orders/orders.svg?branch=master)](https://travis-ci.org/NYU-Devops-orders/orders)
 
 This repository contains sample code for Customer orders for an e-commerce web site. This shows how to create a REST API with subordinate resources like orders that have products:
 
